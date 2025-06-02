@@ -1,37 +1,19 @@
-kenya-gov-api
-├── src
-│   ├── clients
-│   │   ├── base.ts
-│   │   ├── etims.ts
-│   │   ├── ecitizen.ts
-│   │   └── gavaconnect.ts
-│   ├── interfaces
-│   │   ├── config.ts
-│   │   ├── etims.ts
-│   │   ├── ecitizen.ts
-│   │   └── gavaconnect.ts
-│   ├── services
-│   │   ├── payment.ts
-│   │   ├── tax.ts
-│   │   └── application.ts
-│   ├── utils
-│   │   ├── auth.ts
-│   │   └── hash.ts
-│   ├── app.ts
-│   └── index.ts
-├── tests
-│   ├── clients
-│   │   └── __tests__
-│   │       ├── etims.test.ts
-│   │       ├── ecitizen.test.ts
-│   │       └── gavaconnect.test.ts
-│   └── services
-│       └── __tests__
-│           ├── payment.test.ts
-│           ├── tax.test.ts
-│           └── application.test.ts
-├── .env.example
-├── .gitignore
-├── package.json
-├── tsconfig.json
-└── README.md
+export { default as KenyaGovernmentApiApp } from './app';
+export { default as EtimsApiClient } from './clients/etims';
+export { default as EcitizenApiClient } from './clients/ecitizen';
+export { default as GavaConnectApiClient } from './clients/gavaconnect';
+
+// Export interfaces
+export * from './interfaces/config';
+export * from './interfaces/etims';
+export * from './interfaces/ecitizen';
+export * from './interfaces/gavaconnect';
+
+// Export services
+export { default as TaxService } from './services/tax';
+export * from './services/payment';
+export * from './services/application';
+
+// Export utilities
+export * from './utils/auth';
+export * from './utils/hash';
