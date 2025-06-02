@@ -1,0 +1,62 @@
+// filepath: /kenya-gov-api/src/clients/etims.ts
+import { AxiosRequestConfig } from 'axios';
+import BaseApiClient from './base';
+import { EtimsInvoice, EtimsInvoiceItem } from '../interfaces/etims';
+
+class EtimsApiClient extends BaseApiClient {
+  constructor(config: ApiConfig) {
+    super({
+      ...config,
+      baseUrl: config.baseUrl || 'https://developer.go.ke/apis/eTims',
+    });
+  }
+
+  protected addAuthHeaders(config: AxiosRequestConfig): AxiosRequestConfig {
+    if (this.config.apiKey) {
+      config.headers = {
+        ...config.headers,
+        'Authorization': `Bearer ${this.config.apiKey}`,
+        'X-API-Key': this.config.apiKey,
+      };
+    }
+    return config;
+  }
+
+  async getTaxpayerInfo(tin: string): Promise<any> {
+    try {
+      const response = await this.client.get(`/taxpayer/${tin}`);
+      return response.data;
+    } catch (error) {
+      throw new Error(`Failed to get taxpayer info: ${error}`);
+    }
+  }
+
+  async submitInvoice(invoiceData: EtimsInvoice): Promise<any> {
+    try {
+      const response = await this.client.post('/invoice/submit', invoiceData);
+      return response.data;
+    } catch (error) {
+      throw new Error(`Failed to submit invoice: ${error}`);
+    }
+  }
+
+  async getInvoiceStatus(invoiceId: string): Promise<any> {
+    try {
+      const response = await this.client.get(`/invoice/${invoiceId}/status`);
+      return response.data;
+    } catch (error) {
+      throw new Error(`Failed to get invoice status: ${error}`);
+    }
+  }
+
+  async getTaxRates(): Promise<any> {
+    try {
+      const response = await this.client.get('/tax-rates');
+      return response.data;
+    } catch (error) {
+      throw new Error(`Failed to get tax rates: ${error}`);
+    }
+  }
+}
+
+export default EtimsApiClient;
