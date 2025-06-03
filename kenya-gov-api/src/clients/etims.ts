@@ -1,9 +1,9 @@
-// filepath: /kenya-gov-api/src/clients/etims.ts
-import { AxiosRequestConfig } from 'axios';
-import BaseApiClient from './base';
-import { EtimsInvoice, EtimsInvoiceItem } from '../interfaces/etims';
+import { InternalAxiosRequestConfig } from 'axios';
+import { BaseApiClient } from './base';
+import { ApiConfig } from '../interfaces/config';
+import { EtimsInvoice } from '../interfaces/etims';
 
-class EtimsApiClient extends BaseApiClient {
+export class EtimsApiClient extends BaseApiClient {
   constructor(config: ApiConfig) {
     super({
       ...config,
@@ -11,7 +11,7 @@ class EtimsApiClient extends BaseApiClient {
     });
   }
 
-  protected addAuthHeaders(config: AxiosRequestConfig): AxiosRequestConfig {
+  protected addAuthHeaders(config: InternalAxiosRequestConfig): InternalAxiosRequestConfig {
     if (this.config.apiKey) {
       config.headers = {
         ...config.headers,

@@ -1,5 +1,5 @@
 // filepath: /kenya-gov-api/kenya-gov-api/src/clients/base.ts
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig, InternalAxiosRequestConfig } from 'axios';
 
 // Configuration interface for API clients
 interface ApiConfig {
@@ -39,7 +39,7 @@ export abstract class BaseApiClient {
     );
   }
 
-  protected abstract addAuthHeaders(config: AxiosRequestConfig): AxiosRequestConfig;
+  protected abstract addAuthHeaders(config: InternalAxiosRequestConfig): InternalAxiosRequestConfig;
 
   protected handleError(error: any): Promise<never> {
     console.error('API Error:', error.response?.data || error.message);
