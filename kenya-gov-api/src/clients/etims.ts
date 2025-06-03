@@ -1,4 +1,4 @@
-import { InternalAxiosRequestConfig } from 'axios';
+import { InternalAxiosRequestConfig, AxiosHeaders } from 'axios';
 import { BaseApiClient } from './base';
 import { ApiConfig } from '../interfaces/config';
 import { EtimsInvoice } from '../interfaces/etims';
@@ -13,11 +13,10 @@ export class EtimsApiClient extends BaseApiClient {
 
   protected addAuthHeaders(config: InternalAxiosRequestConfig): InternalAxiosRequestConfig {
     if (this.config.apiKey) {
-      config.headers = {
-        ...config.headers,
-        'Authorization': `Bearer ${this.config.apiKey}`,
-        'X-API-Key': this.config.apiKey,
-      };
+      const headers = new AxiosHeaders(config.headers);
+      headers.set('Authorization', `Bearer ${this.config.apiKey}`);
+      headers.set('X-API-Key', this.config.apiKey);
+      config.headers = headers;
     }
     return config;
   }

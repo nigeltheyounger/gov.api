@@ -1,4 +1,3 @@
-// filepath: /kenya-gov-api/kenya-gov-api/src/interfaces/ecitizen.ts
 
 export interface EcitizenPayment {
   serviceId: string;

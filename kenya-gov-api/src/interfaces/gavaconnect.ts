@@ -1,4 +1,3 @@
-// filepath: /kenya-gov-api/kenya-gov-api/src/interfaces/gavaconnect.ts
 
 export interface GavaConnectUserProfile {
   userId: string;

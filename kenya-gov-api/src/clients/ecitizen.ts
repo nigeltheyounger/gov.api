@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosHeaders, InternalAxiosRequestConfig } from 'axios';
 import { ApiConfig, EcitizenPayment, EcitizenApplication } from '../interfaces/ecitizen';
 
 class EcitizenApiClient {
@@ -27,13 +27,12 @@ class EcitizenApiClient {
     );
   }
 
-  private addAuthHeaders(config: AxiosRequestConfig): AxiosRequestConfig {
+  private addAuthHeaders(config: InternalAxiosRequestConfig): InternalAxiosRequestConfig {
     if (this.config.username && this.config.password) {
       const credentials = Buffer.from(`${this.config.username}:${this.config.password}`).toString('base64');
-      config.headers = {
-        ...config.headers,
-        'Authorization': `Basic ${credentials}`,
-      };
+      const headers = new AxiosHeaders(config.headers);
+      headers.set('Authorization', `Basic ${credentials}`);
+      config.headers = headers;
     }
     return config;
   }

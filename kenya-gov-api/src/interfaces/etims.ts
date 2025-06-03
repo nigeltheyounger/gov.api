@@ -1,4 +1,3 @@
-// filepath: /kenya-gov-api/kenya-gov-api/src/interfaces/etims.ts
 
 export interface EtimsInvoice {
   tin: string;

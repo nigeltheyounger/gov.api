@@ -1,4 +1,4 @@
-// filepath: /kenya-gov-api/kenya-gov-api/src/interfaces/config.ts
+
 
 export interface ApiConfig {
   baseUrl: string;

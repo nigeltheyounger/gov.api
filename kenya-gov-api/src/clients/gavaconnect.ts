@@ -1,9 +1,9 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosHeaders, InternalAxiosRequestConfig } from 'axios';
 import { ApiConfig } from '../interfaces/config';
 import { GavaConnectUserProfile } from '../interfaces/gavaconnect';
-import BaseApiClient from './base';
+import { BaseApiClient } from './base';
 
-class GavaConnectApiClient extends BaseApiClient {
+export class GavaConnectApiClient extends BaseApiClient {
   constructor(config: ApiConfig) {
     super({
       ...config,
@@ -11,13 +11,12 @@ class GavaConnectApiClient extends BaseApiClient {
     });
   }
 
-  protected addAuthHeaders(config: AxiosRequestConfig): AxiosRequestConfig {
+  protected addAuthHeaders(config: InternalAxiosRequestConfig): InternalAxiosRequestConfig {
     if (this.config.apiKey) {
-      config.headers = {
-        ...config.headers,
-        'Authorization': `Bearer ${this.config.apiKey}`,
-        'X-API-Key': this.config.apiKey,
-      };
+      const headers = new AxiosHeaders(config.headers);
+      headers.set('Authorization', `Bearer ${this.config.apiKey}`);
+      headers.set('X-API-Key', this.config.apiKey);
+      config.headers = headers;
     }
     return config;
   }
@@ -42,5 +41,3 @@ class GavaConnectApiClient extends BaseApiClient {
     }
   }
 }
-
-export default GavaConnectApiClient;

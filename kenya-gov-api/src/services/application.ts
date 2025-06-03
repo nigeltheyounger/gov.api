@@ -1,5 +1,13 @@
 import { EcitizenApplication } from '../interfaces/ecitizen';
-import { EcitizenApiClient } from '../clients/ecitizen';
+import EcitizenApiClient from '../clients/ecitizen';
+import { AxiosError } from 'axios';
+
+interface ApplicationResponse {
+  id: string;
+  status: string;
+  message?: string;
+  data?: any;
+}
 
 export class ApplicationService {
   private ecitizenClient: EcitizenApiClient;
@@ -8,21 +16,27 @@ export class ApplicationService {
     this.ecitizenClient = ecitizenClient;
   }
 
-  async submitApplication(applicationData: EcitizenApplication): Promise<any> {
+  async submitApplication(applicationData: EcitizenApplication): Promise<ApplicationResponse> {
     try {
       const response = await this.ecitizenClient.submitApplication(applicationData);
       return response;
     } catch (error) {
-      throw new Error(`Failed to submit application: ${error.message}`);
+      if (error instanceof AxiosError) {
+        throw new Error(`Failed to submit application: ${error.response?.data?.message || error.message}`);
+      }
+      throw new Error('Failed to submit application: Unknown error occurred');
     }
   }
 
-  async getApplicationStatus(applicationId: string): Promise<any> {
+  async getApplicationStatus(applicationId: string): Promise<ApplicationResponse> {
     try {
       const response = await this.ecitizenClient.getApplicationStatus(applicationId);
       return response;
     } catch (error) {
-      throw new Error(`Failed to get application status: ${error.message}`);
+      if (error instanceof AxiosError) {
+        throw new Error(`Failed to get application status: ${error.response?.data?.message || error.message}`);
+      }
+      throw new Error('Failed to get application status: Unknown error occurred');
     }
   }
 }
