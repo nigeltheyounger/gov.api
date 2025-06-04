@@ -1,47 +1,44 @@
-import { EtimsApiClient } from './clients/etims';
-import { EcitizenApiClient } from './clients/ecitizen';
-import { GavaConnectApiClient } from './clients/gavaconnect';
-import { ApiConfig } from './interfaces/config';
+import express from 'express';
+import dotenv from 'dotenv';
+import paymentRoutes from './routes/payment.routes';
 
-class KenyaGovernmentApiApp {
-  private etimsClient: EtimsApiClient;
-  private ecitizenClient: EcitizenApiClient;
-  private gavaConnectClient: GavaConnectApiClient;
+// Load environment variables
+dotenv.config();
 
-  constructor(config: ApiConfig) {
-    this.etimsClient = new EtimsApiClient(config);
-    this.ecitizenClient = new EcitizenApiClient(config);
-    this.gavaConnectClient = new GavaConnectApiClient(config);
-  }
+const app = express();
+const port = process.env.PORT || 3000;
 
-  // Example method to check the health of the API clients
-  async healthCheck(): Promise<Record<string, boolean>> {
-    const results: Record<string, boolean> = {};
+// Middleware
+app.use(express.json());
 
-    try {
-      await this.etimsClient.getTaxRates();
-      results.etims = true;
-    } catch {
-      results.etims = false;
-    }
+// Request logging middleware
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
+  next();
+});
 
-    try {
-      await this.ecitizenClient.getAvailableServices();
-      results.ecitizen = true;
-    } catch {
-      results.ecitizen = false;
-    }
+// Routes
+app.use('/api/v1/payments', paymentRoutes);
 
-    try {
-      await this.gavaConnectClient.getIntegratedServices();
-      results.gavaconnect = true;
-    } catch {
-      results.gavaconnect = false;
-    }
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.json({
+    status: 'healthy',
+    timestamp: new Date().toISOString(),
+    version: process.env.npm_package_version
+  });
+});
 
-    return results;
-  }
-}
+// Error handling middleware
+app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  console.error(err.stack);
+  res.status(500).json({
+    success: false,
+    error: 'Internal server error'
+  });
+});
 
-// Export the application class for use in other modules
-export default KenyaGovernmentApiApp;
+// Start server
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
