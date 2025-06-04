@@ -41,3 +41,5 @@ export class GavaConnectApiClient extends BaseApiClient {
     }
   }
 }
+
+export default GavaConnectApiClient;

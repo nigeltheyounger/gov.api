@@ -1,4 +1,3 @@
-
 export interface EcitizenPayment {
   serviceId: string;
   amount: number;

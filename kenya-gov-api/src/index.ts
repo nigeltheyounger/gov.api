@@ -4,9 +4,9 @@ export { default as EcitizenApiClient } from './clients/ecitizen';
 export { default as GavaConnectApiClient } from './clients/gavaconnect';
 
 // Export interfaces
-export * from './interfaces/config';
+export { ApiConfig } from './interfaces/config';
 export * from './interfaces/etims';
-export * from './interfaces/ecitizen';
+export { EcitizenPayment, EcitizenApplication } from './interfaces/ecitizen';
 export * from './interfaces/gavaconnect';
 
 // Export services

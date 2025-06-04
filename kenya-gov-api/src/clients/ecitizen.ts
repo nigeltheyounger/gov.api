@@ -1,5 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosHeaders, InternalAxiosRequestConfig } from 'axios';
-import { ApiConfig, EcitizenPayment, EcitizenApplication } from '../interfaces/ecitizen';
+import { ApiConfig } from '../interfaces/config';
+import { EcitizenPayment, EcitizenApplication } from '../interfaces/ecitizen';
 
 class EcitizenApiClient {
   private client: AxiosInstance;
