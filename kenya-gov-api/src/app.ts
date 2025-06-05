@@ -1,6 +1,8 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import cors from 'cors';
 import paymentRoutes from './routes/payment.routes';
+import servicesRoutes from './routes/services.routes';
 
 // Load environment variables
 dotenv.config();
@@ -10,6 +12,11 @@ const port = process.env.PORT || 3000;
 
 // Middleware
 app.use(express.json());
+app.use(cors({
+  origin: 'http://localhost:5173', // Allow requests from our frontend
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'x-api-key'],
+}));
 
 // Request logging middleware
 app.use((req, res, next) => {
@@ -19,6 +26,7 @@ app.use((req, res, next) => {
 
 // Routes
 app.use('/api/v1/payments', paymentRoutes);
+app.use('/api/v1/services', servicesRoutes);
 
 // Health check endpoint
 app.get('/health', (req, res) => {

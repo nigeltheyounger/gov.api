@@ -20,6 +20,11 @@ interface Service {
   status: 'active' | 'inactive';
 }
 
+interface ApiResponse {
+  success: boolean;
+  data: Service[];
+}
+
 export default function Services() {
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
@@ -38,8 +43,12 @@ export default function Services() {
           throw new Error('Failed to fetch services');
         }
 
-        const data = await response.json();
-        setServices(data);
+        const result: ApiResponse = await response.json();
+        if (result.success && Array.isArray(result.data)) {
+          setServices(result.data);
+        } else {
+          throw new Error('Invalid response format');
+        }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred');
       } finally {
